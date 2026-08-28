@@ -1,371 +1,184 @@
-# 🛡️ SentinelAI
-
-## AI-Powered Cybersecurity Incident Response Platform
-
-SentinelAI is a full-stack cybersecurity incident response platform designed to help security analysts **detect, investigate, analyze, and manage security incidents** from a centralized security operations dashboard.
-
-The platform combines **AI-powered incident investigation**, **IOC extraction**, **threat intelligence analysis**, **risk scoring**, and **incident management** into a single application.
-
----
-
-## 🚀 Features
-
-### 🔐 Incident Management
-
-* Create security incidents
-* View and manage incidents
-* Update incident status and severity
-* Track affected systems and indicators
-* View detailed incident information
-
-### 🤖 AI-Powered Investigation
-
-* Investigate security incidents using Google Gemini
-* Generate AI-based incident analysis
-* Determine potential threat types
-* Generate risk scores
-* Provide investigation summaries and recommendations
-
-### 🛡️ Threat Intelligence
-
-* Automatically extract Indicators of Compromise (IOCs)
-* Analyze:
-
-  * IP addresses
-  * URLs
-  * Domains
-  * Email addresses
-  * File hashes
-* Integrate VirusTotal threat intelligence
-* Classify indicators as:
-
-  * Malicious
-  * Suspicious
-  * Clean
-  * Unknown
-
-### 📊 Security Dashboard
-
-* Real-time security overview
-* AI Risk Score
-* Active Threats
-* AI Investigated Incidents
-* Total Incidents
-* Threat activity visualization
-* Threat severity distribution
-* Recent incidents
-* Live threat feed
-
-### 📈 Security Analytics
-
-* Incident statistics
-* Severity distribution
-* Incident status analysis
-* Threat intelligence statistics
-* IOC statistics
-* AI investigation metrics
-
-### 🔑 Authentication
-
-* User registration
-* Secure login
-* JWT-based authentication
-* Protected application routes
-
----
-
-## 🏗️ System Architecture
-
-```text
-                    ┌─────────────────────┐
-                    │      User / SOC     │
-                    │      Analyst        │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   React Frontend    │
-                    │                     │
-                    │ Dashboard           │
-                    │ Incidents           │
-                    │ AI Investigation    │
-                    │ Threat Intelligence │
-                    │ Analytics           │
-                    └──────────┬──────────┘
-                               │
-                         REST API / Axios
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Node.js Backend   │
-                    │     Express.js      │
-                    └──────────┬──────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-      ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-      │   MongoDB    │ │ Google Gemini│ │  VirusTotal  │
-      │   Database   │ │      AI      │ │ Threat Intel │
-      └──────────────┘ └──────────────┘ └──────────────┘
-```
-
----
-
-## 🔄 Incident Investigation Workflow
-
-```text
-Security Incident
-       │
-       ▼
-IOC Extraction
-       │
-       ▼
-Threat Intelligence Analysis
-       │
-       ▼
-VirusTotal Investigation
-       │
-       ▼
-IOC Results
-       │
-       ▼
-Gemini AI Investigation
-       │
-       ▼
-Threat Classification
-       │
-       ▼
-Risk Score Generation
-       │
-       ▼
-Incident Dashboard
-```
-
----
-
-## 🧰 Tech Stack
-
-### Frontend
-
-* React
-* Vite
-* Tailwind CSS
-* Framer Motion
-* React Router
-* Axios
-* Recharts
-* Lucide React
-
-### Backend
-
-* Node.js
-* Express.js
-* REST API
-* JWT Authentication
-* bcryptjs
-
-### Database
-
-* MongoDB
-* Mongoose
-
-### Artificial Intelligence
-
-* Google Gemini API
-
-### Threat Intelligence
-
-* VirusTotal API
-
-### Development Tools
-
-* Git
-* GitHub
-* VS Code
-* npm
-
----
-
-## 📁 Project Structure
-
-```text
-SentinelAI/
-│
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── models/
-│   │   ├── routes/
-│   │   └── services/
-│   │
-│   ├── server.js
-│   ├── package.json
-│   └── .env.example
-│
-├── frontend/
-│   ├── src/
-│   │   ├── context/
-│   │   ├── features/
-│   │   ├── services/
-│   │   ├── shared/
-│   │   └── styles/
-│   │
-│   ├── public/
-│   ├── package.json
-│   └── .env.example
-│
-├── .gitignore
-├── LICENSE
-└── README.md
-```
+***# SentinelAI***
 
----
 
-## ⚙️ Installation
 
-### 1. Clone the repository
+***## AI-Powered Cybersecurity Incident Response Platform***
 
-```bash
-git clone https://github.com/sakshikadavkar/SentinelAI.git
 
-cd SentinelAI
-```
 
-### 2. Install backend dependencies
+***SentinelAI is an AI-powered cybersecurity incident response platform designed to help security analysts detect, investigate, analyze, and manage security incidents from a centralized dashboard.***
 
-```bash
-cd backend
-npm install
-```
 
-### 3. Configure backend environment variables
 
-Create a `.env` file inside `backend/`.
+***## Features***
 
-```env
-PORT=5000
 
-JWT_SECRET=your_jwt_secret
 
-MONGO_URI=your_mongodb_connection_string
+***- 🔐 Secure user authentication***
 
-GEMINI_API_KEY=your_gemini_api_key
+***- 🚨 Security incident management***
 
-VIRUSTOTAL_API_KEY=your_virustotal_api_key
-```
+***- 🤖 AI-powered incident investigation***
 
-> ⚠️ Never commit your `.env` file or expose API keys publicly.
+***- 🛡️ Threat intelligence analysis***
 
-### 4. Start the backend
+***- 🔎 IOC extraction and analysis***
 
-```bash
-npm run dev
-```
+***- 📊 Real-time security dashboard***
 
-Backend runs on:
+***- ⚠️ AI-based risk scoring***
 
-```text
-http://localhost:5000
-```
+***- 📈 Threat severity and activity analytics***
 
----
+***- 🤖 AI Security Copilot***
 
-## 💻 Start the Frontend
+***- 📡 Live threat feed***
 
-Open another terminal:
+***- 📋 Automated incident analysis***
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+***- 🗄️ MongoDB-based incident storage***
 
-The frontend will run on the Vite development server.
+***- 🔄 Automatic dashboard statistics refresh***
 
----
 
-## 🧪 Production Build
 
-To create a production build:
+***## Tech Stack***
 
-```bash
-cd frontend
-npm run build
-```
 
----
 
-## 🔒 Security
+***### Frontend***
 
-SentinelAI follows basic security practices including:
 
-* JWT authentication
-* Password hashing
-* Environment-based secrets
-* Protected routes
-* API key separation
-* MongoDB-based data persistence
-* `.env` exclusion through `.gitignore`
 
----
+***- React***
 
-## 📸 Application
+***- Vite***
 
-### Security Command Center
+***- Tailwind CSS***
 
-The dashboard provides a centralized view of the organization's security posture, including AI risk scoring, active threats, incident statistics, threat severity, recent incidents, and live threat activity.
+***- Framer Motion***
 
-### Incident Management
+***- Axios***
 
-Security analysts can create, investigate, update, and monitor cybersecurity incidents from the incident management interface.
+***- Recharts***
 
-### AI Investigation
+***- Lucide React***
 
-The AI investigation module analyzes incident information and extracted indicators to provide threat assessment, risk scoring, and investigation insights.
 
-### Threat Intelligence
 
-Indicators are analyzed using external threat intelligence services to identify malicious and suspicious infrastructure.
+***### Backend***
 
----
 
-## 🎯 Project Goals
 
-SentinelAI was developed to demonstrate how **Artificial Intelligence and automated threat intelligence can assist cybersecurity incident response workflows**.
+***- Node.js***
 
-The project focuses on reducing manual investigation effort by combining incident management, IOC analysis, external threat intelligence, and AI-assisted investigation in one platform.
+***- Express.js***
 
----
+***- JWT Authentication***
 
-## 🚧 Future Improvements
+***- REST APIs***
 
-* Real-time WebSocket threat notifications
-* Advanced SIEM log ingestion
-* Automated response playbooks
-* More threat intelligence providers
-* Role-based access control
-* Email/SMS security alerts
-* Advanced AI incident correlation
-* Docker deployment
-* Cloud deployment
-* Security event timeline visualization
 
----
 
-## 👩‍💻 Author
+***### Artificial Intelligence***
 
-**Sakshi Kadavkar**
 
-Computer Science & Engineering
 
-GitHub:
-https://github.com/sakshikadavkar
+***- Google Gemini API***
 
----
 
-## 📄 License
 
-This project is licensed under the MIT License.
+***### Threat Intelligence***
+
+
+
+***- VirusTotal API***
+
+***- IOC analysis***
+
+***- IP address analysis***
+
+***- URL analysis***
+
+***- Domain analysis***
+
+***- Email analysis***
+
+***- File hash analysis***
+
+
+
+***### Database***
+
+
+
+***- MongoDB***
+
+***- Mongoose***
+
+
+
+***## System Architecture***
+
+
+
+***```text***
+
+***User***
+
+&#x20;***│***
+
+&#x20;***▼***
+
+***React Frontend***
+
+&#x20;***│***
+
+&#x20;***│ REST API***
+
+&#x20;***▼***
+
+***Node.js + Express Backend***
+
+&#x20;***│***
+
+&#x20;***├── Authentication***
+
+&#x20;***├── Incident Management***
+
+&#x20;***├── AI Investigation***
+
+&#x20;***├── Threat Intelligence***
+
+&#x20;***└── IOC Analysis***
+
+&#x20;***│***
+
+&#x20;***├───────────────┐***
+
+&#x20;***▼               ▼***
+
+***MongoDB       External APIs***
+
+&#x20;               ***│***
+
+&#x20;         ***┌─────┴─────┐***
+
+&#x20;         ***▼           ▼***
+
+&#x20;      ***Gemini      VirusTotal***
+
+&#x20;         ***│           │***
+
+&#x20;         ***└─────┬─────┘***
+
+&#x20;               ***▼***
+
+&#x20;       ***Security Analysis***
+
+&#x20;               ***│***
+
+&#x20;               ***▼***
+
+&#x20;       ***Dashboard Results***
+
