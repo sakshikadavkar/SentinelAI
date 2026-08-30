@@ -3,6 +3,23 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
+const createToken = (user) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is missing from environment variables");
+  }
+
+  return jwt.sign(
+    {
+      userId: user._id.toString(),
+      role: user.role,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+};
+
 /*
 |--------------------------------------------------------------------------
 | REGISTER
@@ -13,7 +30,6 @@ exports.register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Validate required fields
     if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
@@ -21,7 +37,6 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Validate password length
     if (password.length < 6) {
       return res.status(400).json({
         success: false,
@@ -29,42 +44,31 @@ exports.register = async (req, res) => {
       });
     }
 
-    // Check if user already exists
+    const normalizedEmail = email.toLowerCase().trim();
+
     const existingUser = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
     });
 
     if (existingUser) {
       return res.status(409).json({
         success: false,
-        message: "User with this email already exists",
+        message: "User already exists",
       });
     }
 
-    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
     const user = await User.create({
       name: name.trim(),
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
       password: hashedPassword,
       role: "user",
     });
 
-    // Create JWT
-    const token = jwt.sign(
-      {
-        userId: user._id.toString(),
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
-    );
+    const token = createToken(user);
 
-    console.log("✅ User registered:", user.email);
+    console.log("User registered:", user.email);
 
     return res.status(201).json({
       success: true,
@@ -78,16 +82,15 @@ exports.register = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Registration Error:", error);
+    console.error("Registration error:", error);
 
     return res.status(500).json({
       success: false,
-      message: "Unable to register user",
+      message: "Internal server error",
       error: error.message,
     });
   }
 };
-
 
 /*
 |--------------------------------------------------------------------------
@@ -99,7 +102,6 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Validate fields
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -107,9 +109,10 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Find user
+    const normalizedEmail = email.toLowerCase().trim();
+
     const user = await User.findOne({
-      email: email.toLowerCase().trim(),
+      email: normalizedEmail,
     });
 
     if (!user) {
@@ -119,7 +122,13 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Compare password
+    if (!user.password) {
+      return res.status(500).json({
+        success: false,
+        message: "User password is not configured correctly",
+      });
+    }
+
     const passwordMatch = await bcrypt.compare(
       password,
       user.password
@@ -132,19 +141,9 @@ exports.login = async (req, res) => {
       });
     }
 
-    // Create JWT
-    const token = jwt.sign(
-      {
-        userId: user._id.toString(),
-        role: user.role,
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: "7d",
-      }
-    );
+    const token = createToken(user);
 
-    console.log("✅ User logged in:", user.email);
+    console.log("User logged in:", user.email);
 
     return res.status(200).json({
       success: true,
@@ -158,11 +157,55 @@ exports.login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("❌ Login Error:", error);
+    console.error("Login error:", error);
 
     return res.status(500).json({
       success: false,
-      message: "Unable to login",
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+/*
+|--------------------------------------------------------------------------
+| GET CURRENT USER
+|--------------------------------------------------------------------------
+| GET /api/auth/me
+*/
+exports.getCurrentUser = async (req, res) => {
+  try {
+    if (!req.user || !req.user.userId) {
+      return res.status(401).json({
+        success: false,
+        message: "Not authenticated",
+      });
+    }
+
+    const user = await User.findById(req.user.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Get current user error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
       error: error.message,
     });
   }
